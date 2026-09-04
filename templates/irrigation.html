@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriMinds – Irrigation</title>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#3F6B35">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #3F6B35;
+            --green-dark: #345A2C;
+            --green-light: #E7EFE3;
+            --cream: #F4F1E8;
+            --white: #FFFFFF;
+            --black: #222222;
+            --grey: #6B6B6B;
+            --border: #DEDAD1;
+            --sidebar-width: 230px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--black);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* =====================================
+           SIDEBAR
+        ===================================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: var(--green);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .brand-logo img {
+            width: 125px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .farm-info {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .farm-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .farm-detail {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        /* =====================================
+           NAVIGATION
+        ===================================== */
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 12px;
+        }
+
+        .nav-section {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 0 10px;
+            margin: 10px 0 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 11px;
+            margin-bottom: 3px;
+            border-radius: 6px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+            transition: background 0.15s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.10);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255, 255, 255, 0.16);
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* =====================================
+           SIDEBAR FOOTER
+        ===================================== */
+
+        .sidebar-footer {
+            padding: 14px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 11px;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 14px;
+            border-radius: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.10);
+            color: white;
+        }
+
+        /* =====================================
+           MAIN
+        ===================================== */
+
+        .main {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+        /* =====================================
+           TOP BAR
+        ===================================== */
+
+        .topbar {
+            height: 70px;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .topbar p {
+            font-size: 12px;
+            color: var(--grey);
+            margin-top: 3px;
+        }
+
+        .farm-location {
+            font-size: 12px;
+            color: var(--grey);
+            padding: 7px 11px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background: #FAF9F6;
+        }
+
+        /* =====================================
+           CONTENT
+        ===================================== */
+
+        .content {
+            padding: 28px;
+        }
+
+        .intro {
+            margin-bottom: 22px;
+        }
+
+        .intro h2 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .intro p {
+            font-size: 13px;
+            color: var(--grey);
+            line-height: 1.5;
+        }
+
+        /* =====================================
+           CURRENT STATUS
+        ===================================== */
+
+        .status-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 18px 20px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .status-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #B7B7B7;
+        }
+
+        .status-indicator.on {
+            background: var(--green);
+        }
+
+        .status-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .status-description {
+            font-size: 11px;
+            color: var(--grey);
+            margin-top: 3px;
+        }
+
+        .status-text {
+            font-size: 12px;
+            color: var(--grey);
+        }
+
+        /* =====================================
+           PUMP GRID
+        ===================================== */
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .pump-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        /* =====================================
+           PUMP CARD
+        ===================================== */
+
+        .pump-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .pump-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .pump-name {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .pump-purpose {
+            font-size: 11px;
+            color: var(--grey);
+            margin-top: 4px;
+        }
+
+        .pump-code {
+            font-size: 10px;
+            color: var(--grey);
+            background: #F7F5EF;
+            border: 1px solid var(--border);
+            padding: 4px 7px;
+            border-radius: 4px;
+        }
+
+        /* =====================================
+           SWITCH
+        ===================================== */
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid #ECE9E2;
+            padding-top: 15px;
+        }
+
+        .control-label {
+            font-size: 12px;
+            color: var(--grey);
+        }
+
+        .switch {
+            position: relative;
+            width: 46px;
+            height: 25px;
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #D3D0C8;
+            border-radius: 25px;
+            transition: 0.2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 19px;
+            height: 19px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        input:checked + .slider {
+            background: var(--green);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(21px);
+        }
+
+        /* =====================================
+           MESSAGE
+        ===================================== */
+
+        .message {
+            display: none;
+            margin-top: 16px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .message.success {
+            display: block;
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .message.error {
+            display: block;
+            background: #F7E6E4;
+            color: #9A3E37;
+        }
+
+        /* =====================================
+           INFORMATION
+        ===================================== */
+
+        .info-card {
+            margin-top: 22px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 18px 20px;
+        }
+
+        .info-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .info-text {
+            font-size: 12px;
+            color: var(--grey);
+            line-height: 1.6;
+        }
+
+        /* =====================================
+           MOBILE
+        ===================================== */
+
+        @media (max-width: 900px) {
+            .pump-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+                transform: translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .farm-location {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =====================================
+         SIDEBAR
+    ===================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+                <img
+                    src="{{ url_for('static', filename='logo.png') }}"
+                    alt="AgriMinds Logo">
+            </div>
+
+            <div class="farm-info">
+
+                <div class="farm-name">
+                    {{ user_name }}'s Farm
+                </div>
+
+                <div class="farm-detail">
+                    {{ crop_type }} · {{ farm_size }} ha
+                </div>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                Main
+            </div>
+
+            <a
+                class="nav-item"
+                href="/dashboard">
+
+                <span class="nav-icon">
+                    ▦
+                </span>
+
+                Dashboard
+
+            </a>
+
+            <a
+                class="nav-item"
+                href="/history">
+
+                <span class="nav-icon">
+                    ◷
+                </span>
+
+                History
+
+            </a>
+
+            <a
+                class="nav-item active"
+                href="/irrigation">
+
+                
+                <span class="nav-icon">⌁</span>
+                
+
+                Irrigation
+
+            </a>
+
+            <div class="nav-section">
+                Farm
+            </div>
+
+            <a
+                class="nav-item"
+                href="/my-farm">
+
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
+                My Farm
+
+            </a>
+
+            <a
+                class="nav-item"
+                href="/alerts">
+
+                <span class="nav-icon">
+                    !
+                </span>
+
+                Alerts
+
+            </a>
+
+            <a
+                class="nav-item"
+                href="/settings">
+
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+
+            <a
+                class="logout-btn"
+                href="/logout">
+
+                <span>
+                    ←
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================
+         MAIN
+    ===================================== -->
+
+    <main class="main">
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Irrigation
+                </h1>
+
+                <p>
+                    Manage your farm's irrigation pumps
+                </p>
+
+            </div>
+
+            <div class="farm-location">
+
+                {{ city }}
+
+                {% if state %}
+                    · {{ state }}
+                {% endif %}
+
+            </div>
+
+        </header>
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <!-- INTRO -->
+
+            <div class="intro">
+
+                <h2>
+                    Irrigation Control
+                </h2>
+
+                <p>
+                    Turn individual irrigation pumps on or off from this page.
+                </p>
+
+            </div>
+
+
+            <!-- =================================
+                 STATUS
+            ================================= -->
+
+            <div class="status-card">
+
+                <div class="status-left">
+
+                    <div
+                        class="status-indicator"
+                        id="main-status-dot">
+                    </div>
+
+                    <div>
+
+                        <div class="status-title">
+                            Irrigation System
+                        </div>
+
+                        <div
+                            class="status-description"
+                            id="main-status-text">
+                            No pumps currently running
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="status-text"
+                    id="system-status">
+                    Ready
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PUMPS
+            ================================= -->
+
+            <div class="section-title">
+                Pump Controls
+            </div>
+
+            <div class="pump-grid">
+
+                <!-- NITROGEN -->
+
+                <div class="pump-card">
+
+                    <div class="pump-top">
+
+                        <div>
+
+                            <div class="pump-name">
+                                Nitrogen Pump
+                            </div>
+
+                            <div class="pump-purpose">
+                                Nutrient application
+                            </div>
+
+                        </div>
+
+                        <div class="pump-code">
+                            PUMP N
+                        </div>
+
+                    </div>
+
+                    <div class="control-row">
+
+                        <span
+                            class="control-label"
+                            id="label-pump_N">
+                            OFF
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="pump_N"
+                                onchange="togglePump('pump_N', this.checked)">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PHOSPHORUS -->
+
+                <div class="pump-card">
+
+                    <div class="pump-top">
+
+                        <div>
+
+                            <div class="pump-name">
+                                Phosphorus Pump
+                            </div>
+
+                            <div class="pump-purpose">
+                                Nutrient application
+                            </div>
+
+                        </div>
+
+                        <div class="pump-code">
+                            PUMP P
+                        </div>
+
+                    </div>
+
+                    <div class="control-row">
+
+                        <span
+                            class="control-label"
+                            id="label-pump_P">
+                            OFF
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="pump_P"
+                                onchange="togglePump('pump_P', this.checked)">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- POTASSIUM -->
+
+                <div class="pump-card">
+
+                    <div class="pump-top">
+
+                        <div>
+
+                            <div class="pump-name">
+                                Potassium Pump
+                            </div>
+
+                            <div class="pump-purpose">
+                                Nutrient application
+                            </div>
+
+                        </div>
+
+                        <div class="pump-code">
+                            PUMP K
+                        </div>
+
+                    </div>
+
+                    <div class="control-row">
+
+                        <span
+                            class="control-label"
+                            id="label-pump_K">
+                            OFF
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="pump_K"
+                                onchange="togglePump('pump_K', this.checked)">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- WATER -->
+
+                <div class="pump-card">
+
+                    <div class="pump-top">
+
+                        <div>
+
+                            <div class="pump-name">
+                                Water Pump
+                            </div>
+
+                            <div class="pump-purpose">
+                                Soil irrigation
+                            </div>
+
+                        </div>
+
+                        <div class="pump-code">
+                            PUMP W
+                        </div>
+
+                    </div>
+
+                    <div class="control-row">
+
+                        <span
+                            class="control-label"
+                            id="label-pump_W">
+                            OFF
+                        </span>
+
+                        <label class="switch">
+
+                            <input
+                                type="checkbox"
+                                id="pump_W"
+                                onchange="togglePump('pump_W', this.checked)">
+
+                            <span class="slider"></span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MESSAGE -->
+
+            <div
+                class="message"
+                id="message">
+            </div>
+
+
+            <!-- =================================
+                 INFORMATION
+            ================================= -->
+
+            <div class="info-card">
+
+                <div class="info-title">
+                    Irrigation Information
+                </div>
+
+                <div class="info-text">
+                    Use the switches above to control the connected
+                    irrigation pumps. Changes are sent to the farm
+                    controller and stored in the irrigation command
+                    system.
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =====================================
+         JAVASCRIPT
+    ===================================== -->
+
+    <!--
+        Flask sends the existing commands data here.
+        Keeping it in JSON prevents editor errors
+        around Jinja inside JavaScript.
+    -->
+
+    <script id="commands-data" type="application/json">
+        {{ commands | default({}) | tojson }}
+    </script>
+
+    <script>
+
+        const commandsElement =
+            document.getElementById("commands-data");
+
+        const commands =
+            JSON.parse(
+                commandsElement.textContent || "{}"
+            );
+
+        const pumps = [
+            "pump_N",
+            "pump_P",
+            "pump_K",
+            "pump_W"
+        ];
+
+
+        /* =====================================
+           INITIALISE PUMP STATES
+        ===================================== */
+
+        function initialisePumps() {
+
+            pumps.forEach(function(pump) {
+
+                const checkbox =
+                    document.getElementById(pump);
+
+                const label =
+                    document.getElementById("label-" + pump);
+
+                if (!checkbox) {
+                    return;
+                }
+
+                let state = null;
+
+                if (
+                    commands &&
+                    typeof commands === "object"
+                ) {
+
+                    if (
+                        commands[pump] !== undefined
+                    ) {
+
+                        state =
+                            commands[pump];
+
+                    }
+
+                    else if (
+                        commands.valve === pump &&
+                        commands.state !== undefined
+                    ) {
+
+                        state =
+                            commands.state;
+
+                    }
+
+                }
+
+                if (
+                    typeof state === "string" &&
+                    state.toUpperCase() === "ON"
+                ) {
+
+                    checkbox.checked = true;
+
+                    label.textContent = "ON";
+
+                }
+
+                else {
+
+                    checkbox.checked = false;
+
+                    label.textContent = "OFF";
+
+                }
+
+            });
+
+            updateSystemStatus();
+
+        }
+
+
+        /* =====================================
+           TOGGLE PUMP
+        ===================================== */
+
+        function togglePump(pump, isOn) {
+
+            const state =
+                isOn ? "ON" : "OFF";
+
+            const checkbox =
+                document.getElementById(pump);
+
+            const label =
+                document.getElementById("label-" + pump);
+
+            if (label) {
+
+                label.textContent =
+                    state;
+
+            }
+
+
+            /*
+             * Send command to existing Flask endpoint.
+             */
+
+            fetch("/valve", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    valve: pump,
+
+                    state: state
+
+                })
+
+            })
+
+            .then(function(response) {
+
+                return response.json();
+
+            })
+
+            .then(function(data) {
+
+                if (data.success) {
+
+                    showMessage(
+                        "Irrigation command updated successfully.",
+                        "success"
+                    );
+
+                    updateSystemStatus();
+
+                }
+
+                else {
+
+                    /*
+                     * If the backend reports an error,
+                     * restore the previous switch state.
+                     */
+
+                    if (checkbox) {
+
+                        checkbox.checked =
+                            !isOn;
+
+                    }
+
+                    if (label) {
+
+                        label.textContent =
+                            !isOn ? "ON" : "OFF";
+
+                    }
+
+                    showMessage(
+                        "Unable to update the irrigation command.",
+                        "error"
+                    );
+
+                    updateSystemStatus();
+
+                }
+
+            })
+
+            .catch(function(error) {
+
+                console.error(error);
+
+                /*
+                 * Restore switch if request fails.
+                 */
+
+                if (checkbox) {
+
+                    checkbox.checked =
+                        !isOn;
+
+                }
+
+                if (label) {
+
+                    label.textContent =
+                        !isOn ? "ON" : "OFF";
+
+                }
+
+                showMessage(
+                    "Could not connect to the irrigation controller.",
+                    "error"
+                );
+
+                updateSystemStatus();
+
+            });
+
+        }
+
+
+        /* =====================================
+           SYSTEM STATUS
+        ===================================== */
+
+        function updateSystemStatus() {
+
+            let activeCount = 0;
+
+            pumps.forEach(function(pump) {
+
+                const checkbox =
+                    document.getElementById(pump);
+
+                if (
+                    checkbox &&
+                    checkbox.checked
+                ) {
+
+                    activeCount++;
+
+                }
+
+            });
+
+
+            const dot =
+                document.getElementById(
+                    "main-status-dot"
+                );
+
+            const description =
+                document.getElementById(
+                    "main-status-text"
+                );
+
+            const status =
+                document.getElementById(
+                    "system-status"
+                );
+
+
+            if (activeCount > 0) {
+
+                dot.classList.add("on");
+
+                description.textContent =
+                    activeCount === 1
+                        ? "1 pump currently running"
+                        : activeCount + " pumps currently running";
+
+                status.textContent =
+                    "Running";
+
+            }
+
+            else {
+
+                dot.classList.remove("on");
+
+                description.textContent =
+                    "No pumps currently running";
+
+                status.textContent =
+                    "Ready";
+
+            }
+
+        }
+
+
+        /* =====================================
+           MESSAGE
+        ===================================== */
+
+        function showMessage(text, type) {
+
+            const message =
+                document.getElementById(
+                    "message"
+                );
+
+            message.textContent =
+                text;
+
+            message.className =
+                "message " + type;
+
+            setTimeout(function() {
+
+                message.className =
+                    "message";
+
+            }, 3000);
+
+        }
+
+
+        /* =====================================
+           PAGE LOAD
+        ===================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function() {
+
+                initialisePumps();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,2764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriMinds – Dashboard</title>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#3F6B35">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="AgriMinds">
+    <link rel="apple-touch-icon" href="/static/logo.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #3F6B35;
+            --green-dark: #345A2C;
+            --green-light: #E7EFE3;
+
+            --cream: #F4F1E8;
+            --white: #FFFFFF;
+
+            --black: #222222;
+            --grey: #6B6B6B;
+            --light-grey: #D7D4CC;
+            --border: #E1DED6;
+
+            --red: #B84A42;
+            --red-light: #F8E8E6;
+
+            --yellow: #A87824;
+            --yellow-light: #F7EED9;
+
+            --sidebar-width: 230px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--black);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: var(--sidebar-width);
+            height: 100vh;
+
+            background: var(--green);
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .brand-logo img {
+            width: 125px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+        }
+
+        .farm-info {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .farm-name {
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .farm-detail {
+            color: rgba(255,255,255,0.72);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 12px;
+        }
+
+        .nav-section {
+            color: rgba(255,255,255,0.55);
+
+            font-size: 11px;
+            font-weight: 500;
+
+            text-transform: uppercase;
+            letter-spacing: 1px;
+
+            padding: 0 10px;
+            margin: 10px 0 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 11px;
+
+            margin-bottom: 3px;
+
+            border-radius: 6px;
+
+            color: rgba(255,255,255,0.78);
+
+            font-size: 14px;
+            font-weight: 400;
+
+            transition: background 0.15s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.10);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.16);
+            color: white;
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .sidebar-footer {
+            padding: 14px 12px;
+
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 11px;
+
+            color: rgba(255,255,255,0.72);
+
+            font-size: 14px;
+
+            border-radius: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.10);
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: var(--sidebar-width);
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            height: 70px;
+
+            background: var(--white);
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 50;
+        }
+
+        .topbar-left h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--black);
+        }
+
+        .topbar-left p {
+            font-size: 12px;
+            color: var(--grey);
+            margin-top: 3px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .reading-badge {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            border: 1px solid #C9D7C4;
+
+            background: #F2F6F0;
+
+            color: var(--green);
+
+            border-radius: 5px;
+
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--green);
+        }
+
+        .refresh-btn {
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--light-grey);
+
+            background: white;
+
+            color: var(--grey);
+
+            border-radius: 5px;
+
+            cursor: pointer;
+        }
+
+        .refresh-btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 25px 28px 35px;
+        }
+
+
+        /* =========================
+           ALERT
+        ========================= */
+
+        .alert-banner {
+            padding: 12px 15px;
+
+            margin-bottom: 20px;
+
+            border: 1px solid #E1C47A;
+
+            background: var(--yellow-light);
+
+            color: #765514;
+
+            font-size: 13px;
+
+            border-radius: 5px;
+        }
+
+        .alert-banner.danger {
+            border-color: #E0AAA5;
+            background: var(--red-light);
+            color: #8B332D;
+        }
+
+        .alert-banner.hidden {
+            display: none;
+        }
+
+
+        /* =========================
+           WEATHER
+        ========================= */
+
+        .weather-strip {
+            background: var(--green);
+
+            color: white;
+
+            padding: 20px 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 25px;
+
+            border-radius: 6px;
+        }
+
+        .weather-main {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .weather-icon {
+            font-size: 28px;
+        }
+
+        .weather-temp {
+            font-size: 28px;
+            font-weight: 500;
+            line-height: 1;
+        }
+
+        .weather-desc {
+            color: rgba(255,255,255,0.75);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .weather-stats {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+        }
+
+        .w-stat {
+            text-align: center;
+        }
+
+        .w-stat-val {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .w-stat-label {
+            margin-top: 3px;
+
+            font-size: 10px;
+
+            color: rgba(255,255,255,0.65);
+
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .growth-tag {
+            padding: 7px 10px;
+
+            border: 1px solid rgba(255,255,255,0.30);
+
+            color: white;
+
+            font-size: 11px;
+
+            border-radius: 4px;
+        }
+
+
+        /* =========================
+           SOWING DATE
+        ========================= */
+
+        #sowing-input-wrap {
+            display: none;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            padding: 12px 15px;
+
+            margin-bottom: 20px;
+
+            color: var(--black);
+
+            font-size: 13px;
+
+            border-radius: 5px;
+        }
+
+        #sowing-date-input {
+            margin-left: 10px;
+
+            padding: 6px 8px;
+
+            border: 1px solid var(--light-grey);
+
+            border-radius: 4px;
+        }
+
+        #sowing-input-wrap button {
+            padding: 6px 12px;
+
+            border: none;
+
+            border-radius: 4px;
+
+            cursor: pointer;
+
+            margin-left: 6px;
+        }
+
+
+        /* =========================
+           SECTION TITLE
+        ========================= */
+
+        .section-title {
+            font-size: 12px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.8px;
+
+            color: var(--grey);
+
+            margin-bottom: 12px;
+        }
+
+
+        /* =========================
+           SENSOR GRID
+        ========================= */
+
+        .sensor-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 25px;
+        }
+
+        .sensor-card {
+            background: var(--white);
+
+            border: 1px solid var(--border);
+
+            border-radius: 5px;
+
+            padding: 18px;
+
+            min-height: 150px;
+        }
+
+        .sensor-card:hover {
+            border-color: #C5CFC1;
+        }
+
+        .sensor-card.deficit {
+            border-left: 4px solid var(--yellow);
+        }
+
+        .sensor-card.excess {
+            border-left: 4px solid var(--red);
+        }
+
+        .sensor-card.good {
+            border-left: 4px solid var(--green);
+        }
+
+        .sensor-header {
+            display: flex;
+            align-items: center;
+
+            gap: 9px;
+
+            margin-bottom: 17px;
+        }
+
+        .sensor-icon {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--green-light) !important;
+
+            border-radius: 4px;
+
+            font-size: 14px;
+        }
+
+        .sensor-name {
+            font-size: 12px;
+
+            font-weight: 500;
+
+            color: var(--grey);
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.4px;
+        }
+
+        .sensor-value {
+            font-size: 25px;
+
+            font-weight: 500;
+
+            color: var(--black);
+        }
+
+        .sensor-unit {
+            font-size: 12px;
+
+            color: var(--grey);
+
+            margin-left: 3px;
+        }
+
+        .sensor-range {
+            font-size: 11px;
+
+            color: var(--grey);
+
+            margin-top: 6px;
+        }
+
+        .sensor-bar {
+            height: 4px;
+
+            background: #ECEAE4;
+
+            margin-top: 13px;
+
+            border-radius: 2px;
+
+            overflow: hidden;
+        }
+
+        .sensor-bar-fill {
+            height: 100%;
+
+            background: var(--green);
+
+            border-radius: 2px;
+        }
+
+        .sensor-bar-fill.low {
+            background: var(--yellow);
+        }
+
+        .sensor-bar-fill.mid {
+            background: var(--red);
+        }
+
+
+        /* =========================
+           FERTILIZER DAYS CARD
+        ========================= */
+
+        #card-days {
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           RECOMMENDATION
+        ========================= */
+
+        .recommendation-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 5px;
+
+            padding: 20px;
+        }
+
+        .rec-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 14px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rec-title {
+            font-size: 16px;
+
+            font-weight: 600;
+
+            color: var(--black);
+        }
+
+        .rec-badge {
+            padding: 5px 9px;
+
+            border-radius: 4px;
+
+            font-size: 11px;
+
+            font-weight: 500;
+        }
+
+        .rec-badge.action {
+            background: var(--red-light);
+            color: var(--red);
+        }
+
+        .rec-badge.ok {
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .rec-body {
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr auto;
+
+            gap: 15px;
+
+            align-items: center;
+        }
+
+        .rec-fert {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .fert-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: var(--green-light);
+
+            border-radius: 5px;
+
+            font-size: 18px;
+        }
+
+        .fert-name {
+            font-size: 15px;
+
+            font-weight: 600;
+
+            color: var(--black);
+        }
+
+        .fert-confidence {
+            font-size: 11px;
+
+            color: var(--grey);
+
+            margin-top: 3px;
+        }
+
+        .rec-stat {
+            text-align: center;
+        }
+
+        .rec-stat-val {
+            font-size: 18px;
+
+            font-weight: 600;
+
+            color: var(--black);
+        }
+
+        .rec-stat-label {
+            font-size: 10px;
+
+            color: var(--grey);
+
+            text-transform: uppercase;
+
+            margin-top: 3px;
+        }
+
+        .refresh-ai-btn {
+            padding: 9px 14px;
+
+            background: var(--green);
+
+            color: white;
+
+            border: none;
+
+            border-radius: 4px;
+
+            font-size: 12px;
+
+            cursor: pointer;
+        }
+
+        .refresh-ai-btn:hover {
+            background: var(--green-dark);
+        }
+
+        #rec-drip-detail {
+            display: none;
+
+            margin-top: 14px;
+
+            padding: 10px 12px;
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+            font-size: 12px;
+
+            border-radius: 4px;
+        }
+
+
+        /* =========================
+           LOADING
+        ========================= */
+
+        .loading-overlay {
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(244,241,232,0.96);
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            z-index: 999;
+        }
+
+        .loading-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            padding: 25px 30px;
+
+            text-align: center;
+
+            border-radius: 5px;
+        }
+
+        .loading-spinner {
+            width: 32px;
+            height: 32px;
+
+            border: 3px solid #DCE5D9;
+
+            border-top-color: var(--green);
+
+            border-radius: 50%;
+
+            animation: spin 0.8s linear infinite;
+
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            color: var(--grey);
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1100px) {
+
+            .sensor-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .weather-strip {
+                flex-wrap: wrap;
+            }
+
+            .rec-body {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                width: 200px;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .sensor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weather-stats {
+                width: 100%;
+                justify-content: space-between;
+                gap: 10px;
+            }
+
+            .rec-body {
+                grid-template-columns: 1fr;
+            }
+
+            .rec-stat {
+                text-align: left;
+            }
+
+            .reading-badge {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =========================
+         LOADING
+    ========================= -->
+
+    <div class="loading-overlay" id="loading-overlay">
+
+        <div class="loading-card">
+
+            <div class="loading-spinner"></div>
+
+            <div class="loading-text">
+                Loading farm data...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+                <img
+                    src="{{ url_for('static', filename='logo.png') }}"
+                    alt="AgriMinds Logo">
+            </div>
+
+            <div class="farm-info">
+
+                <div class="farm-name">
+                    {{ user_name }}'s Farm
+                </div>
+
+                <div class="farm-detail">
+                    {{ crop_type }} · {{ farm_size }} ha
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                Main
+            </div>
+
+            <a class="nav-item active" href="/dashboard">
+                <span class="nav-icon">▦</span>
+                Dashboard
+            </a>
+
+            <a class="nav-item" href="/history">
+                <span class="nav-icon">◷</span>
+                History
+            </a>
+
+            <a class="nav-item" href="/irrigation">
+                <span class="nav-icon">⌁</span>
+                Irrigation
+            </a>
+
+
+            <div class="nav-section">
+                Farm
+            </div>
+
+            <a class="nav-item" href="/my-farm">
+                <span class="nav-icon">⌂</span>
+                My Farm
+            </a>
+
+            <a class="nav-item" href="/alerts">
+                <span class="nav-icon">!</span>
+                Alerts
+            </a>
+
+            <a class="nav-item" href="/settings">
+                <span class="nav-icon">⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a class="logout-btn" href="/login">
+                <span>←</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+
+                <h1>
+                    Farm Dashboard
+                </h1>
+
+                <p id="last-updated">
+                    Last updated: fetching...
+                </p>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <div class="reading-badge">
+
+                    <span class="pulse-dot"></span>
+
+                    Live Sensors
+
+                </div>
+
+
+                <button
+                    class="refresh-btn"
+                    onclick="fetchReadings()"
+                    title="Refresh">
+
+                    ↻
+
+                </button>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- ALERT -->
+
+            <div
+                class="alert-banner hidden"
+                id="alert-banner">
+
+                <span id="alert-text">
+                    Sensor alert detected.
+                </span>
+
+            </div>
+
+
+
+            <!-- WEATHER -->
+
+            <section class="weather-strip">
+
+
+                <div class="weather-main">
+
+                    <div
+                        class="weather-icon"
+                        id="weather-icon">
+                        ⛅
+                    </div>
+
+
+                    <div>
+
+                        <div class="weather-temp">
+                            <span id="w-temp">--</span>°C
+                        </div>
+
+                        <div
+                            class="weather-desc"
+                            id="w-desc">
+
+                            Fetching weather...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="weather-stats">
+
+
+                    <div class="w-stat">
+
+                        <div class="w-stat-val">
+                            <span id="w-humidity">--</span>%
+                        </div>
+
+                        <div class="w-stat-label">
+                            Humidity
+                        </div>
+
+                    </div>
+
+
+                    <div class="w-stat">
+
+                        <div class="w-stat-val">
+                            <span id="w-rainfall">--</span> mm
+                        </div>
+
+                        <div class="w-stat-label">
+                            Rainfall 7d
+                        </div>
+
+                    </div>
+
+
+                    <div class="w-stat">
+
+                        <div class="w-stat-val">
+                            <span id="w-ec">--</span>
+                        </div>
+
+                        <div class="w-stat-label">
+                            EC
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="w-stat"
+                        id="sowing-stat"
+                        style="cursor:pointer"
+                        onclick="document.getElementById('sowing-input-wrap').style.display='block'"
+                        title="Edit sowing date">
+
+                        <div
+                            class="w-stat-val"
+                            id="w-days-sown">
+
+                            --d
+
+                        </div>
+
+                        <div class="w-stat-label">
+                            Since Sowing
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="growth-tag"
+                    id="growth-tag">
+
+                    Vegetative Stage
+
+                </div>
+
+            </section>
+
+
+
+            <!-- SOWING DATE -->
+
+            <div id="sowing-input-wrap">
+
+                <strong>
+                    Set Sowing Date:
+                </strong>
+
+                <input
+                    type="date"
+                    id="sowing-date-input">
+
+                <button
+                    onclick="saveSowingDate()"
+                    style="background:#3F6B35;color:white;">
+
+                    Save
+
+                </button>
+
+                <button
+                    onclick="document.getElementById('sowing-input-wrap').style.display='none'"
+                    style="background:#E8E5DE;color:#333;">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+
+            <script>
+
+                const _sowingFromProfile = "{{ sowing_date }}";
+                const _cropType = "{{ crop_type }}";
+                const _soilType = "{{ soil_type }}";
+                const _farmSize = "{{ farm_size }}";
+                const _city = "{{ city }}";
+
+            </script>
+
+
+
+            <!-- SOIL SENSOR READINGS -->
+
+            <div class="section-title">
+                Soil Sensor Readings
+            </div>
+
+
+            <div class="sensor-grid">
+
+
+                <!-- NITROGEN -->
+
+                <div
+                    class="sensor-card deficit"
+                    id="card-n">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            N
+                        </div>
+
+                        <div class="sensor-name">
+                            Nitrogen
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-n">
+                            --
+                        </span>
+
+                        <span class="sensor-unit">
+                            mg/kg
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Optimal: 92.3–280 mg/kg
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill low"
+                            id="bar-n"
+                            style="width:8%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- PHOSPHORUS -->
+
+                <div
+                    class="sensor-card deficit"
+                    id="card-p">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            P
+                        </div>
+
+                        <div class="sensor-name">
+                            Phosphorus
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-p">
+                            --
+                        </span>
+
+                        <span class="sensor-unit">
+                            mg/kg
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Optimal: 4.2–8.5 mg/kg
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill low"
+                            id="bar-p"
+                            style="width:11%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- POTASSIUM -->
+
+                <div
+                    class="sensor-card good"
+                    id="card-k">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            K
+                        </div>
+
+                        <div class="sensor-name">
+                            Potassium
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-k">
+                            --
+                        </span>
+
+                        <span class="sensor-unit">
+                            mg/kg
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Optimal: 42–108 mg/kg
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill"
+                            id="bar-k"
+                            style="width:55%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SOIL MOISTURE -->
+
+                <div
+                    class="sensor-card good"
+                    id="card-moisture">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            %
+                        </div>
+
+                        <div class="sensor-name">
+                            Soil Moisture
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-moisture">
+                            55
+                        </span>
+
+                        <span class="sensor-unit">
+                            %
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Optimal: 40–70%
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill"
+                            id="bar-moisture"
+                            style="width:65%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SOIL PH -->
+
+                <div
+                    class="sensor-card good"
+                    id="card-ph">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            pH
+                        </div>
+
+                        <div class="sensor-name">
+                            Soil pH
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-ph">
+                            6.5
+                        </span>
+
+                        <span class="sensor-unit">
+                            pH
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Optimal: 6.8–7.2
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill"
+                            id="bar-ph"
+                            style="width:72%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- DAYS SINCE FERTILIZER -->
+
+                <div
+                    class="sensor-card"
+                    id="card-days">
+
+                    <div class="sensor-header">
+
+                        <div class="sensor-icon">
+                            D
+                        </div>
+
+                        <div class="sensor-name">
+                            Since Last Fert.
+                        </div>
+
+                    </div>
+
+
+                    <div>
+
+                        <span
+                            class="sensor-value"
+                            id="val-days">
+                            --
+                        </span>
+
+                        <span class="sensor-unit">
+                            days
+                        </span>
+
+                    </div>
+
+
+                    <div class="sensor-range">
+                        Recommended: every 5–7 days
+                    </div>
+
+
+                    <div class="sensor-bar">
+
+                        <div
+                            class="sensor-bar-fill"
+                            id="bar-days"
+                            style="width:0%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 AI RECOMMENDATION
+            ========================= -->
+
+            <div class="section-title">
+                Fertilizer Recommendation
+            </div>
+
+
+            <div class="recommendation-card">
+
+
+                <div class="rec-header">
+
+                    <div class="rec-title">
+                        Recommended Action
+                    </div>
+
+                    <div
+                        class="rec-badge action"
+                        id="rec-badge">
+
+                        Action Required
+
+                    </div>
+
+                </div>
+
+
+                <div class="rec-body">
+
+
+                    <div class="rec-fert">
+
+                        <div class="fert-icon">
+                            +
+                        </div>
+
+                        <div>
+
+                            <div
+                                class="fert-name"
+                                id="rec-fert-name">
+
+                                Urea
+
+                            </div>
+
+                            <div
+                                class="fert-confidence"
+                                id="rec-confidence">
+
+                                50.0% confidence
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="rec-stat">
+
+                        <div
+                            class="rec-stat-val"
+                            id="rec-amount">
+
+                            1.61
+
+                        </div>
+
+                        <div class="rec-stat-label">
+                            kg / hectare
+                        </div>
+
+                    </div>
+
+
+                    <div class="rec-stat">
+
+                        <div
+                            class="rec-stat-val"
+                            id="rec-days">
+
+                            4
+
+                        </div>
+
+                        <div class="rec-stat-label">
+                            Days to apply
+                        </div>
+
+                    </div>
+
+
+                    <div class="rec-stat">
+
+                        <button
+                            class="refresh-ai-btn"
+                            onclick="getPrediction()">
+
+                            Refresh
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div id="rec-drip-detail"></div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================= -->
+
+    <script>
+
+
+        /* =========================
+           LIVE MODEL INPUT STATE
+           (populated from Firebase via
+           /sensor-data and /weather so
+           getPrediction() always sends
+           real readings, not guesses)
+        ========================= */
+
+        let currentSensors = {
+            n: 0,
+            p: 0,
+            k: 0,
+            ph: 6.5,
+            ec: 0.3,
+            moisture: 50,
+            temperature: 28,
+            humidity: 60,
+            days_since_fert: 3
+        };
+
+        let currentWeather = {
+            rainfall: 0
+        };
+
+        let currentGrowthStage = 'Vegetative';
+
+
+
+        /* =========================
+           PAGE LOAD
+        ========================= */
+
+        window.addEventListener('load', () => {
+
+            setTimeout(() => {
+
+                const overlay =
+                    document.getElementById('loading-overlay');
+
+                if (overlay) {
+                    overlay.style.display = 'none';
+                }
+
+                fetchWeather();
+                fetchReadings();
+                updateLastUpdated();
+
+                setInterval(fetchReadings, 30000);
+                setInterval(fetchWeather, 600000);
+
+                loadSowingDate();
+
+            }, 1000);
+
+        });
+
+
+
+        /* =========================
+           LAST UPDATED
+        ========================= */
+
+        function updateLastUpdated() {
+
+            const now = new Date();
+
+            const element =
+                document.getElementById('last-updated');
+
+            if (element) {
+
+                element.textContent =
+                    'Last updated: ' +
+                    now.toLocaleTimeString(
+                        'en-IN',
+                        {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        }
+                    );
+
+            }
+
+        }
+
+
+
+        /* =========================
+           WEATHER
+        ========================= */
+
+        function fetchWeather() {
+
+            const city =
+                (typeof _city !== 'undefined' && _city)
+                    ? _city
+                    : 'Tiruchirappalli';
+
+            fetch(
+                '/weather?city=' +
+                encodeURIComponent(city)
+            )
+
+            .then(res => res.json())
+
+            .then(data => {
+
+                if (data.success) {
+
+                    currentWeather.rainfall =
+                        parseFloat(data.rainfall) || 0;
+
+                    document.getElementById(
+                        'w-rainfall'
+                    ).textContent =
+                        data.rainfall ?? 0;
+
+                    document.getElementById(
+                        'w-desc'
+                    ).textContent =
+                        data.description +
+                        ' · ' +
+                        data.city;
+
+                    document.getElementById(
+                        'weather-icon'
+                    ).textContent =
+                        getWeatherIcon(data.description);
+
+                } else {
+
+                    document.getElementById(
+                        'w-rainfall'
+                    ).textContent = '0';
+
+                    document.getElementById(
+                        'w-desc'
+                    ).textContent =
+                        'Weather unavailable · ' + city;
+
+                }
+
+            })
+
+            .catch(() => {
+
+                document.getElementById(
+                    'w-rainfall'
+                ).textContent = '0';
+
+                document.getElementById(
+                    'w-desc'
+                ).textContent =
+                    'Weather unavailable';
+
+            });
+
+        }
+
+
+
+        function getWeatherIcon(desc) {
+
+            if (!desc) return '🌤️';
+
+            desc = desc.toLowerCase();
+
+            if (desc.includes('rain')) return '🌧️';
+
+            if (desc.includes('cloud')) return '⛅';
+
+            if (
+                desc.includes('clear') ||
+                desc.includes('sunny')
+            ) {
+                return '☀️';
+            }
+
+            if (desc.includes('storm')) return '⛈️';
+
+            return '🌤️';
+
+        }
+
+
+
+        /* =========================
+           SENSOR DATA
+        ========================= */
+
+        function fetchReadings() {
+
+            fetch('/sensor-data')
+
+            .then(res => {
+
+                if (!res.ok) {
+
+                    if (res.status === 404) {
+
+                        document.getElementById(
+                            'last-updated'
+                        ).textContent =
+                            'Run the website through Flask to see live data';
+
+                        return Promise.reject(
+                            'preview_404'
+                        );
+
+                    }
+
+                    throw new Error(
+                        'HTTP ' + res.status
+                    );
+                }
+
+                return res.json();
+
+            })
+
+            .then(data => {
+
+                if (!data.success) {
+
+                    console.error(
+                        'Sensor error:',
+                        data.error
+                    );
+
+                    updateLastUpdated();
+
+                    return;
+                }
+
+
+                updateSensor(
+                    'n',
+                    data.n,
+                    92.3,
+                    280,
+                    380
+                );
+
+
+                updateSensor(
+                    'p',
+                    data.p,
+                    4.2,
+                    8.5,
+                    15
+                );
+
+
+                updateSensor(
+                    'k',
+                    data.k,
+                    42,
+                    108,
+                    150
+                );
+
+
+                updateSensor(
+                    'ph',
+                    data.ph,
+                    6.8,
+                    7.2,
+                    8.5
+                );
+
+
+                updateSensor(
+                    'moisture',
+                    data.moisture,
+                    40,
+                    70,
+                    100
+                );
+
+
+                const ecEl =
+                    document.getElementById('w-ec');
+
+                if (ecEl) {
+
+                    ecEl.textContent =
+                        data.ec != null
+                            ? parseFloat(data.ec).toFixed(2)
+                            : '0.00';
+
+                }
+
+
+                if (data.temperature > 0) {
+
+                    const tEl =
+                        document.getElementById('w-temp');
+
+                    if (tEl) {
+
+                        tEl.textContent =
+                            parseFloat(
+                                data.temperature
+                            ).toFixed(1);
+
+                    }
+
+                }
+
+
+                if (data.humidity > 0) {
+
+                    const hEl =
+                        document.getElementById(
+                            'w-humidity'
+                        );
+
+                    if (hEl) {
+
+                        hEl.textContent =
+                            Math.round(data.humidity);
+
+                    }
+
+                }
+
+
+                const daysEl =
+                    document.getElementById('val-days');
+
+                if (daysEl) {
+
+                    daysEl.textContent =
+                        data.days_since_fert || 0;
+
+                }
+
+
+                // Save the live Firebase reading so getPrediction()
+                // sends the model real sensor data, not stale/empty values
+                currentSensors = {
+                    n:               data.n,
+                    p:               data.p,
+                    k:               data.k,
+                    ph:              data.ph,
+                    ec:              data.ec,
+                    moisture:        data.moisture,
+                    temperature:     data.temperature,
+                    humidity:        data.humidity,
+                    days_since_fert: data.days_since_fert
+                };
+
+                updateLastUpdated();
+
+                updateAlertBanner(data);
+
+                getPrediction();
+
+            })
+
+            .catch(err => {
+
+                if (err !== 'preview_404') {
+
+                    console.error(
+                        'fetchReadings failed:',
+                        err
+                    );
+
+                    updateLastUpdated();
+
+                }
+
+            });
+
+        }
+
+
+
+        /* =========================
+           ALERTS
+        ========================= */
+
+        function updateAlertBanner(data) {
+
+            const alerts = [];
+
+
+            if (
+                data.n > 0 &&
+                data.n < 92.3
+            ) {
+
+                alerts.push(
+                    'Nitrogen deficiency – apply Urea'
+                );
+
+            }
+
+
+            if (data.n > 280) {
+
+                alerts.push(
+                    'Nitrogen excess – stop N fertilization'
+                );
+
+            }
+
+
+            if (
+                data.p > 0 &&
+                data.p < 4.2
+            ) {
+
+                alerts.push(
+                    'Phosphorus deficiency – apply phosphate'
+                );
+
+            }
+
+
+            if (data.p > 8.5) {
+
+                alerts.push(
+                    'Phosphorus excess – reduce P'
+                );
+
+            }
+
+
+            if (
+                data.k > 0 &&
+                data.k < 42
+            ) {
+
+                alerts.push(
+                    'Potassium deficiency – apply potash'
+                );
+
+            }
+
+
+            if (data.k > 108) {
+
+                alerts.push(
+                    'Potassium excess – reduce K'
+                );
+
+            }
+
+
+            if (
+                data.moisture > 0 &&
+                data.moisture < 40
+            ) {
+
+                alerts.push(
+                    'Soil moisture is low – irrigation recommended'
+                );
+
+            }
+
+
+            if (data.moisture > 70) {
+
+                alerts.push(
+                    'Soil moisture is high – reduce irrigation'
+                );
+
+            }
+
+
+            if (
+                data.ph > 0 &&
+                data.ph < 6.8
+            ) {
+
+                alerts.push(
+                    'Soil pH is low – apply lime'
+                );
+
+            }
+
+
+            if (data.ph > 7.2) {
+
+                alerts.push(
+                    'Soil pH is high – apply sulphur'
+                );
+
+            }
+
+
+            const banner =
+                document.getElementById(
+                    'alert-banner'
+                );
+
+            const alertEl =
+                document.getElementById(
+                    'alert-text'
+                );
+
+
+            if (alerts.length > 0) {
+
+                alertEl.innerHTML =
+                    alerts
+                        .map(
+                            a => '<strong>' +
+                                a +
+                                '</strong>'
+                        )
+                        .join(' &nbsp; | &nbsp; ');
+
+                banner.className =
+                    'alert-banner danger';
+
+            } else {
+
+                banner.className =
+                    'alert-banner hidden';
+
+            }
+
+        }
+
+
+
+        /* =========================
+           SENSOR CARD
+        ========================= */
+
+        function updateSensor(
+            id,
+            value,
+            optMin,
+            optMax,
+            maxVal
+        ) {
+
+            const valEl =
+                document.getElementById(
+                    'val-' + id
+                );
+
+            const barEl =
+                document.getElementById(
+                    'bar-' + id
+                );
+
+            const cardEl =
+                document.getElementById(
+                    'card-' + id
+                );
+
+
+            if (!valEl) return;
+
+
+            valEl.textContent =
+                id === 'ph'
+                    ? parseFloat(value).toFixed(1)
+                    : value;
+
+
+            const pct =
+                Math.min(
+                    (value / maxVal) * 100,
+                    100
+                );
+
+
+            if (barEl) {
+
+                barEl.style.width =
+                    pct + '%';
+
+            }
+
+
+            if (value < optMin) {
+
+                if (cardEl) {
+
+                    cardEl.className =
+                        'sensor-card deficit';
+
+                }
+
+                if (barEl) {
+
+                    barEl.className =
+                        'sensor-bar-fill low';
+
+                }
+
+            }
+
+            else if (value > optMax) {
+
+                if (cardEl) {
+
+                    cardEl.className =
+                        'sensor-card excess';
+
+                }
+
+                if (barEl) {
+
+                    barEl.className =
+                        'sensor-bar-fill mid';
+
+                }
+
+            }
+
+            else {
+
+                if (cardEl) {
+
+                    cardEl.className =
+                        'sensor-card good';
+
+                }
+
+                if (barEl) {
+
+                    barEl.className =
+                        'sensor-bar-fill';
+
+                }
+
+            }
+
+        }
+
+
+
+        /* =========================
+           PREDICTION
+        ========================= */
+
+        function getPrediction() {
+
+            const payload = {
+                crop_type: "{{ crop_type }}",
+                soil_type: "{{ soil_type }}",
+                growth_stage: currentGrowthStage,               // real computed stage, not a filler
+                soil_ph: parseFloat(currentSensors.ph) || 6.5,
+                ec: parseFloat(currentSensors.ec) || 0,
+                soil_moisture: parseFloat(currentSensors.moisture) || 0,
+                temperature: parseFloat(currentSensors.temperature) || 0,
+                humidity: parseFloat(currentSensors.humidity) || 0,
+                days_since_fert: parseInt(currentSensors.days_since_fert) || 3,
+                n_soil: parseFloat(currentSensors.n) || 0,
+                p_soil: parseFloat(currentSensors.p) || 0,
+                k_soil: parseFloat(currentSensors.k) || 0,
+                rainfall: parseFloat(currentWeather.rainfall) || 0,      // live OpenWeather reading
+                forecast_rain: parseFloat(currentWeather.rainfall) || 0, // no forecast endpoint wired yet, reuse current reading
+                farm_size: parseFloat("{{ farm_size }}") || 0.5          // real farm size from profile
+            };
+
+                    
+
+
+            fetch(
+                '/predict',
+                {
+                    method: 'POST',
+
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+
+                    body:
+                        JSON.stringify(payload)
+                }
+            )
+
+            .then(res => res.json())
+
+            .then(data => {
+
+                if (!data.success) return;
+
+
+                document.getElementById(
+                    'rec-fert-name'
+                ).textContent =
+                    data.fertilizer
+                        .replace(/_/g, ' ');
+
+
+                document.getElementById(
+                    'rec-confidence'
+                ).textContent =
+                    data.confidence +
+                    '% confidence';
+
+
+                document.getElementById(
+                    'rec-amount'
+                ).textContent =
+                    data.amount;
+
+
+                document.getElementById(
+                    'rec-days'
+                ).textContent =
+                    data.days;
+
+
+                const detailEl =
+                    document.getElementById(
+                        'rec-drip-detail'
+                    );
+
+
+                if (detailEl) {
+
+                    if (data.grams) {
+
+                        detailEl.textContent =
+                            data.grams +
+                            'g total · ' +
+                            data.minutes +
+                            ' min · ' +
+                            data.sessions +
+                            ' session(s)';
+
+                        detailEl.style.display =
+                            'block';
+
+                    } else {
+
+                        detailEl.style.display =
+                            'none';
+
+                    }
+
+                }
+
+
+                const badge =
+                    document.getElementById(
+                        'rec-badge'
+                    );
+
+
+                if (
+                    data.fertilizer ===
+                    'No_Fertigation_Needed'
+                ) {
+
+                    badge.className =
+                        'rec-badge ok';
+
+                    badge.textContent =
+                        'All Good';
+
+                    document
+                        .getElementById(
+                            'alert-banner'
+                        )
+                        .classList.add('hidden');
+
+                }
+
+                else if (
+                    data.fertilizer ===
+                    'Delay_Fertigation'
+                ) {
+
+                    badge.className =
+                        'rec-badge ok';
+
+                    badge.textContent =
+                        'Delay';
+
+                }
+
+                else {
+
+                    badge.className =
+                        'rec-badge action';
+
+                    badge.textContent =
+                        'Action Required';
+
+                }
+
+            })
+
+            .catch(() => {});
+
+        }
+
+
+
+        /* =========================
+           SOWING DATE
+        ========================= */
+
+        function saveSowingDate() {
+
+            const val =
+                document.getElementById(
+                    'sowing-date-input'
+                ).value;
+
+
+            if (!val) return;
+
+
+            sessionStorage.setItem(
+                'sowingDate',
+                val
+            );
+
+
+            document.getElementById(
+                'sowing-input-wrap'
+            ).style.display = 'none';
+
+
+            getGrowthStage(
+                val,
+                (
+                    typeof _cropType !== 'undefined' &&
+                    _cropType
+                )
+                    ? _cropType
+                    : 'Rice'
+            );
+
+        }
+
+
+
+        function loadSowingDate() {
+
+            if (
+                typeof _sowingFromProfile !==
+                'undefined' &&
+                _sowingFromProfile
+            ) {
+
+                document.getElementById(
+                    'sowing-date-input'
+                ).value =
+                    _sowingFromProfile;
+
+
+                getGrowthStage(
+                    _sowingFromProfile,
+                    (
+                        typeof _cropType !== 'undefined' &&
+                        _cropType
+                    )
+                        ? _cropType
+                        : 'Rice'
+                );
+
+                return;
+
+            }
+
+
+            const saved =
+                sessionStorage.getItem(
+                    'sowingDate'
+                );
+
+
+            if (saved) {
+
+                document.getElementById(
+                    'sowing-date-input'
+                ).value = saved;
+
+
+                getGrowthStage(
+                    saved,
+                    'Rice'
+                );
+
+                return;
+
+            }
+
+
+            document.getElementById(
+                'sowing-input-wrap'
+            ).style.display = 'block';
+
+        }
+
+
+
+        /* =========================
+           GROWTH STAGE
+        ========================= */
+
+        function getGrowthStage(
+            sowingDateStr,
+            cropType
+        ) {
+
+            const sowing =
+                new Date(sowingDateStr);
+
+            const today =
+                new Date();
+
+
+            const days =
+                Math.floor(
+                    (
+                        today - sowing
+                    ) /
+                    (
+                        1000 *
+                        60 *
+                        60 *
+                        24
+                    )
+                );
+
+
+            document.getElementById(
+                'w-days-sown'
+            ).textContent =
+                days + 'd';
+
+
+            const stages = {
+
+                Rice: [
+                    [0, 7, 'Germination'],
+                    [8, 20, 'Seedling'],
+                    [21, 45, 'Vegetative'],
+                    [46, 65, 'Tillering'],
+                    [66, 80, 'Panicle_Init'],
+                    [81, 95, 'Heading'],
+                    [96, 110, 'Flowering'],
+                    [111, 130, 'Grain_Fill'],
+                    [131, 150, 'Maturity']
+                ],
+
+                Maize: [
+                    [0, 7, 'Germination'],
+                    [8, 20, 'Seedling'],
+                    [21, 40, 'Vegetative'],
+                    [41, 60, 'Tasseling'],
+                    [61, 75, 'Silking'],
+                    [76, 95, 'Grain_Fill'],
+                    [96, 120, 'Maturity']
+                ],
+
+                default: [
+                    [0, 7, 'Germination'],
+                    [8, 25, 'Seedling'],
+                    [26, 60, 'Vegetative'],
+                    [61, 90, 'Flowering'],
+                    [91, 120, 'Maturity']
+                ]
+
+            };
+
+
+            const cropStages =
+                stages[cropType] ||
+                stages.default;
+
+
+            let stage =
+                'Vegetative';
+
+
+            for (
+                const [start, end, name]
+                of cropStages
+            ) {
+
+                if (
+                    days >= start &&
+                    days <= end
+                ) {
+
+                    stage = name;
+
+                    break;
+
+                }
+
+            }
+
+
+            document.getElementById(
+                'growth-tag'
+            ).textContent =
+                stage.replace('_', ' ') +
+                ' Stage';
+
+
+            currentGrowthStage = stage;
+
+
+            return stage;
+
+        }
+
+
+
+        /* =========================
+           SERVICE WORKER
+        ========================= */
+
+        if (
+            'serviceWorker' in navigator &&
+            window.location.hostname ===
+            'localhost'
+        ) {
+
+            navigator.serviceWorker
+                .register(
+                    '/service-worker.js'
+                )
+
+                .then(
+                    reg =>
+                        console.log(
+                            'AgriMinds PWA ready!',
+                            reg.scope
+                        )
+                )
+
+                .catch(
+                    err =>
+                        console.log(
+                            'SW error:',
+                            err
+                        )
+                );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

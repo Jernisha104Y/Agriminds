@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriMinds - Login</title>
+
+    <link rel="manifest"
+          href="{{ url_for('static', filename='manifest.json') }}">
+
+    <meta name="theme-color" content="#3F6B35">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-title"
+          content="AgriMinds">
+
+    <link rel="apple-touch-icon"
+          href="{{ url_for('static', filename='.png') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        /* ==============================
+           BASIC SETTINGS
+        ============================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #3F6B35;
+            --green-dark: #345A2C;
+            --cream: #F4F1E8;
+            --white: #FFFFFF;
+            --black: #222222;
+            --grey: #6B6B6B;
+            --border: #D7D4CC;
+
+            --error-bg: #F8EEEE;
+            --error-border: #E2BBBB;
+            --error-text: #B33A3A;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            font-family: 'DM Sans', Arial, sans-serif;
+            color: var(--black);
+            display: flex;
+        }
+
+
+        /* ==============================
+           LEFT SIDE
+        ============================== */
+
+        .left-panel {
+            width: 55%;
+            min-height: 100vh;
+            background: var(--green);
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            padding: 60px;
+        }
+
+
+        /* ==============================
+           LOGO
+        ============================== */
+
+        .brand {
+            margin-bottom: 55px;
+        }
+
+        .brand img {
+            display: block;
+
+            width: auto;
+            height: 70px;
+
+            max-width: 260px;
+
+            object-fit: contain;
+        }
+
+        .tagline {
+            margin-top: 12px;
+
+            color: #DDE7D9;
+
+            font-size: 0.78rem;
+            font-weight: 400;
+
+            letter-spacing: 1.2px;
+
+            text-transform: uppercase;
+        }
+
+
+        /* ==============================
+           LEFT CONTENT
+        ============================== */
+
+        .hero-text h1 {
+            color: var(--white);
+
+            font-size: 2.5rem;
+            font-weight: 500;
+
+            line-height: 1.25;
+
+            margin-bottom: 18px;
+        }
+
+        .hero-text p {
+            max-width: 410px;
+
+            color: #E3EBE0;
+
+            font-size: 0.95rem;
+            font-weight: 400;
+
+            line-height: 1.7;
+        }
+
+
+        /* ==============================
+           RIGHT SIDE
+        ============================== */
+
+        .right-panel {
+            width: 45%;
+            min-height: 100vh;
+
+            background: var(--cream);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 50px;
+        }
+
+
+        /* ==============================
+           LOGIN BOX
+        ============================== */
+
+        .form-container {
+            width: 100%;
+            max-width: 360px;
+        }
+
+        .form-title {
+            color: var(--black);
+
+            font-size: 1.8rem;
+            font-weight: 600;
+
+            margin-bottom: 7px;
+        }
+
+        .form-subtitle {
+            color: var(--grey);
+
+            font-size: 0.9rem;
+            font-weight: 400;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* ==============================
+           ERROR MESSAGE
+        ============================== */
+
+        .error-msg {
+            display: none;
+
+            background: var(--error-bg);
+
+            border: 1px solid var(--error-border);
+
+            border-radius: 6px;
+
+            padding: 11px 14px;
+
+            margin-bottom: 18px;
+
+            color: var(--error-text);
+
+            font-size: 0.83rem;
+        }
+
+
+        /* ==============================
+           INPUT
+        ============================== */
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--black);
+
+            font-size: 0.78rem;
+            font-weight: 500;
+
+            letter-spacing: 0.3px;
+
+            text-transform: uppercase;
+        }
+
+        .input-wrapper {
+            position: relative;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .input-flag {
+            position: absolute;
+
+            left: 14px;
+
+            height: 22px;
+
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+
+            padding-right: 10px;
+
+            border-right: 1px solid var(--border);
+
+            color: var(--grey);
+
+            font-size: 0.85rem;
+            font-weight: 500;
+
+            pointer-events: none;
+        }
+
+        #phone-input {
+            width: 100%;
+            height: 48px;
+
+            padding: 0 15px 0 78px;
+
+            background: var(--white);
+
+            border: 1px solid var(--border);
+
+            border-radius: 6px;
+
+            outline: none;
+
+            color: var(--black);
+
+            font-family: inherit;
+
+            font-size: 0.95rem;
+            font-weight: 400;
+
+            letter-spacing: 0.5px;
+        }
+
+        #phone-input::placeholder {
+            color: #999999;
+        }
+
+        #phone-input:focus {
+            border-color: var(--green);
+            outline: none;
+        }
+
+
+        /* ==============================
+           LOGIN BUTTON
+        ============================== */
+
+        .login-button {
+            width: 100%;
+            height: 48px;
+
+            margin-top: 5px;
+
+            border: none;
+
+            border-radius: 6px;
+
+            background: var(--green);
+
+            color: var(--white);
+
+            font-family: inherit;
+
+            font-size: 0.95rem;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            transition: background 0.15s ease;
+        }
+
+        .login-button:hover {
+            background: var(--green-dark);
+        }
+
+        .login-button:active {
+            transform: none;
+        }
+
+
+        /* ==============================
+           DIVIDER
+        ============================== */
+
+        .divider {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            margin: 24px 0;
+
+            color: var(--grey);
+
+            font-size: 0.8rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+
+            flex: 1;
+
+            height: 1px;
+
+            background: var(--border);
+        }
+
+
+        /* ==============================
+           REGISTER
+        ============================== */
+
+        .register-link {
+            text-align: center;
+
+            color: var(--grey);
+
+            font-size: 0.85rem;
+            font-weight: 400;
+        }
+
+        .register-link a {
+            color: var(--green);
+
+            font-weight: 500;
+
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            color: var(--green-dark);
+        }
+
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 768px) {
+
+            body {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                width: 100%;
+
+                min-height: 330px;
+
+                padding: 40px 30px;
+            }
+
+            .right-panel {
+                width: 100%;
+
+                min-height: auto;
+
+                padding: 45px 30px;
+            }
+
+            .brand {
+                margin-bottom: 40px;
+            }
+
+            .hero-text h1 {
+                font-size: 2rem;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <!-- =================================
+         LEFT PANEL
+    ================================== -->
+
+    <div class="left-panel">
+
+        <!-- LOGO -->
+
+        <div class="brand">
+
+            <img
+                src="{{ url_for('static', filename='logo.png') }}"
+                alt="AgriMinds Logo">
+
+            <div class="tagline">
+                Smart Farming Intelligence
+            </div>
+
+        </div>
+
+
+        <!-- MAIN TEXT -->
+
+        <div class="hero-text">
+
+            <h1>
+                Grow smarter,<br>
+                harvest better.
+            </h1>
+
+            <p>
+                Real-time soil intelligence powered by AI.
+                Know exactly what your crops need, when they need it.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         RIGHT PANEL
+    ================================== -->
+
+    <div class="right-panel">
+
+        <div class="form-container">
+
+            <!-- TITLE -->
+
+            <h2 class="form-title">
+                Welcome back
+            </h2>
+
+            <p class="form-subtitle">
+                Enter your mobile number to continue
+            </p>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="error-msg"
+                id="phone-error">
+
+                Please enter a valid 10-digit mobile number.
+
+            </div>
+
+
+            <!-- MOBILE NUMBER -->
+
+            <div class="input-group">
+
+                <label
+                    class="input-label"
+                    for="phone-input">
+
+                    Mobile Number
+
+                </label>
+
+
+                <div class="input-wrapper">
+
+                    <span class="input-flag">
+                        🇮🇳 +91
+                    </span>
+
+                    <input
+                        type="tel"
+                        id="phone-input"
+                        name="phone"
+                        placeholder="98765 43210"
+                        maxlength="10"
+                        inputmode="numeric"
+                        autocomplete="tel">
+
+                </div>
+
+            </div>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <button
+                type="button"
+                class="login-button"
+                onclick="loginUser()">
+
+                Login
+
+            </button>
+
+
+            <!-- DIVIDER -->
+
+            <div class="divider">
+                or
+            </div>
+
+
+            <!-- REGISTER -->
+
+            <div class="register-link">
+
+                New to AgriMinds?
+
+                <a href="/register">
+                    Create account
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =================================
+         JAVASCRIPT
+    ================================== -->
+
+    <script>
+
+        /* ==============================
+           ALLOW ONLY NUMBERS
+        ============================== */
+
+        const phoneInput =
+            document.getElementById('phone-input');
+
+        phoneInput.addEventListener(
+            'input',
+            function () {
+
+                this.value =
+                    this.value.replace(/\D/g, '');
+
+            }
+        );
+
+
+        /* ==============================
+           ENTER KEY
+        ============================== */
+
+        phoneInput.addEventListener(
+            'keypress',
+            function (event) {
+
+                if (event.key === 'Enter') {
+                    loginUser();
+                }
+
+            }
+        );
+
+
+        /* ==============================
+           LOGIN
+        ============================== */
+
+        function loginUser() {
+
+            const phone =
+                phoneInput.value.trim();
+
+            const error =
+                document.getElementById('phone-error');
+
+
+            /* Validate */
+
+            if (
+                phone.length !== 10 ||
+                !/^\d{10}$/.test(phone)
+            ) {
+
+                error.style.display = 'block';
+
+                error.textContent =
+                    'Please enter a valid 10-digit mobile number.';
+
+                return;
+            }
+
+
+            error.style.display = 'none';
+
+
+            /*
+             * Send the mobile number
+             * to the Flask login route.
+             */
+
+            fetch('/login', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+
+                body: JSON.stringify({
+                    phone: phone
+                })
+
+            })
+
+            .then(function (response) {
+                return response.json();
+            })
+
+            .then(function (data) {
+
+                if (data.success) {
+
+                    window.location.href =
+                        data.redirect || '/dashboard';
+
+                } else {
+
+                    error.style.display = 'block';
+
+                    error.textContent =
+                        data.message ||
+                        'Login failed. Please try again.';
+                }
+
+            })
+
+            .catch(function () {
+
+                error.style.display = 'block';
+
+                error.textContent =
+                    'Unable to connect to the server.';
+
+            });
+
+        }
+
+
+        /* ==============================
+           SERVICE WORKER
+        ============================== */
+
+        if ('serviceWorker' in navigator) {
+
+            navigator.serviceWorker.register(
+                "{{ url_for('static', filename='service-worker.js') }}"
+            )
+            .then(function () {
+
+                console.log('PWA ready!');
+
+            })
+            .catch(function (error) {
+
+                console.log(
+                    'Service worker error:',
+                    error
+                );
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+{
+    "input_features": [
+        "Crop_Type",
+        "Growth_Stage",
+        "Soil_Type",
+        "Soil_pH",
+        "EC_dS_m",
+        "Soil_Moisture_pct",
+        "Temperature_C",
+        "Humidity_pct",
+        "Rainfall_7d_mm",
+        "Forecast_Rain_24h_mm",
+        "Days_Since_Last_Fert",
+        "N_Soil_mg_kg",
+        "P_Soil_mg_kg",
+        "K_Soil_mg_kg"
+    ],
+    "categorical_features": [
+        "Crop_Type",
+        "Growth_Stage",
+        "Soil_Type"
+    ],
+    "numeric_features": [
+        "Soil_pH",
+        "EC_dS_m",
+        "Soil_Moisture_pct",
+        "Temperature_C",
+        "Humidity_pct",
+        "Rainfall_7d_mm",
+        "Forecast_Rain_24h_mm",
+        "Days_Since_Last_Fert",
+        "N_Soil_mg_kg",
+        "P_Soil_mg_kg",
+        "K_Soil_mg_kg"
+    ],
+    "targets": {
+        "Y1": "Recommended_Fertilizer",
+        "Y2": "Amount_kg_ha",
+        "Y3": "Apply_Within_Days"
+    },
+    "models": {
+        "Y1": "fertilizer_model.cbm",
+        "Y2": "amount_model.cbm",
+        "Y3": "timing_model.cbm"
+    },
+    "Y1_test_accuracy": 0.9808,
+    "Y2_test_mae": 0.0511,
+    "Y2_test_rmse": 0.0828,
+    "Y2_test_r2": 0.9557,
+    "Y3_test_accuracy": 0.9874
+}

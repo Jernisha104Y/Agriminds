@@ -1,0 +1,26 @@
+{
+  "name": "AgriMinds - Smart Fertigation",
+  "short_name": "AgriMinds",
+  "description": "AI-Powered Smart Fertigation System for precision farming",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f0ede6",
+  "theme_color": "#2d4a1e",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["agriculture", "productivity", "utilities"],
+  "lang": "en"
+}

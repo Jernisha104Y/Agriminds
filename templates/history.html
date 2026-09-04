@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriMinds – History</title>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#3F6B35">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #3F6B35;
+            --green-dark: #345A2C;
+            --green-light: #E7EFE3;
+
+            --cream: #F4F1E8;
+            --white: #FFFFFF;
+
+            --black: #222222;
+            --grey: #6B6B6B;
+            --border: #DEDAD1;
+
+            --sidebar-width: 230px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "DM Sans", sans-serif;
+            background: var(--cream);
+            color: var(--black);
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: var(--sidebar-width);
+            height: 100vh;
+
+            background: var(--green);
+
+            display: flex;
+            flex-direction: column;
+
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px 18px;
+
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .brand-logo img {
+            width: 125px;
+            height: auto;
+
+            display: block;
+            object-fit: contain;
+        }
+
+        .farm-info {
+            margin-top: 18px;
+
+            padding-top: 15px;
+
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .farm-name {
+            color: white;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .farm-detail {
+            color: rgba(255,255,255,0.72);
+
+            font-size: 12px;
+
+            margin-top: 5px;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .sidebar-nav {
+            flex: 1;
+
+            padding: 20px 12px;
+        }
+
+        .nav-section {
+            color: rgba(255,255,255,0.55);
+
+            font-size: 11px;
+            font-weight: 500;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+
+            padding: 0 10px;
+
+            margin: 10px 0 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 11px;
+
+            margin-bottom: 3px;
+
+            border-radius: 6px;
+
+            color: rgba(255,255,255,0.78);
+
+            font-size: 14px;
+
+            transition: background 0.15s ease;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.10);
+            color: white;
+        }
+
+        .nav-item.active {
+            background: rgba(255,255,255,0.16);
+
+            color: white;
+
+            font-weight: 500;
+        }
+
+        .nav-icon {
+            width: 18px;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .sidebar-footer {
+            padding: 14px 12px;
+
+            border-top: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            padding: 10px 11px;
+
+            color: rgba(255,255,255,0.72);
+
+            font-size: 14px;
+
+            border-radius: 6px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.10);
+
+            color: white;
+        }
+
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: var(--sidebar-width);
+
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           TOP BAR
+        ========================= */
+
+        .topbar {
+            height: 70px;
+
+            background: var(--white);
+
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 28px;
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 50;
+        }
+
+        .topbar h1 {
+            font-size: 20px;
+
+            font-weight: 600;
+
+            color: var(--black);
+        }
+
+        .topbar p {
+            font-size: 12px;
+
+            color: var(--grey);
+
+            margin-top: 3px;
+        }
+
+        .farm-location {
+            font-size: 12px;
+
+            color: var(--grey);
+
+            padding: 7px 11px;
+
+            border: 1px solid var(--border);
+
+            border-radius: 5px;
+
+            background: #FAF9F6;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
+        .content {
+            padding: 28px;
+        }
+
+
+        /* =========================
+           INTRO
+        ========================= */
+
+        .intro {
+            margin-bottom: 22px;
+        }
+
+        .intro h2 {
+            font-size: 18px;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+        .intro p {
+            font-size: 13px;
+
+            color: var(--grey);
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           SUMMARY CARDS
+        ========================= */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 14px;
+
+            margin-bottom: 24px;
+        }
+
+        .summary-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 5px;
+
+            padding: 17px 18px;
+        }
+
+        .summary-label {
+            font-size: 11px;
+
+            color: var(--grey);
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.6px;
+
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 21px;
+
+            font-weight: 500;
+
+            color: var(--green);
+        }
+
+
+        /* =========================
+           HISTORY CARD
+        ========================= */
+
+        .history-card {
+            background: white;
+
+            border: 1px solid var(--border);
+
+            border-radius: 5px;
+
+            overflow: hidden;
+        }
+
+        .history-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 17px 19px;
+
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-title {
+            font-size: 15px;
+
+            font-weight: 600;
+        }
+
+        .history-count {
+            font-size: 11px;
+
+            color: var(--grey);
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+            padding: 5px 9px;
+
+            border-radius: 4px;
+        }
+
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 850px;
+        }
+
+        thead {
+            background: #F7F5EF;
+        }
+
+        th {
+            padding: 12px 15px;
+
+            text-align: left;
+
+            font-size: 10px;
+
+            font-weight: 600;
+
+            text-transform: uppercase;
+
+            letter-spacing: 0.5px;
+
+            color: var(--grey);
+
+            border-bottom: 1px solid var(--border);
+
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 13px 15px;
+
+            font-size: 12px;
+
+            border-bottom: 1px solid #ECE9E2;
+
+            color: var(--black);
+
+            white-space: nowrap;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #FAF9F5;
+        }
+
+
+        /* =========================
+           VALUE
+        ========================= */
+
+        .value {
+            font-weight: 500;
+        }
+
+        .unit {
+            color: var(--grey);
+
+            font-size: 10px;
+
+            margin-left: 2px;
+        }
+
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status {
+            display: inline-block;
+
+            padding: 4px 8px;
+
+            border-radius: 4px;
+
+            font-size: 10px;
+
+            font-weight: 500;
+        }
+
+        .status.good {
+            background: var(--green-light);
+
+            color: var(--green);
+        }
+
+        .status.warning {
+            background: #F7EED9;
+
+            color: #87651F;
+        }
+
+        .status.danger {
+            background: #F7E6E4;
+
+            color: #9A3E37;
+        }
+
+
+        /* =========================
+           EMPTY STATE
+        ========================= */
+
+        .empty-state {
+            text-align: center;
+
+            padding: 55px 20px;
+        }
+
+        .empty-icon {
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 13px;
+
+            background: var(--green-light);
+
+            color: var(--green);
+
+            border-radius: 5px;
+
+            font-size: 18px;
+        }
+
+        .empty-state h3 {
+            font-size: 15px;
+
+            font-weight: 600;
+
+            margin-bottom: 5px;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+
+            color: var(--grey);
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 768px) {
+
+            .sidebar {
+                width: 200px;
+
+                transform: translateX(-100%);
+
+                transition: transform 0.2s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 18px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .farm-location {
+                display: none;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         SIDEBAR
+    ========================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+
+            <div class="brand-logo">
+
+                <img
+                    src="{{ url_for('static', filename='logo.png') }}"
+                    alt="AgriMinds Logo">
+
+            </div>
+
+
+            <div class="farm-info">
+
+                <div class="farm-name">
+                    {{ user_name }}'s Farm
+                </div>
+
+                <div class="farm-detail">
+                    {{ crop_type }} · {{ farm_size }} ha
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <div class="nav-section">
+                Main
+            </div>
+
+
+            <a
+                class="nav-item"
+                href="/dashboard">
+
+                <span class="nav-icon">
+                    ▦
+                </span>
+
+                Dashboard
+
+            </a>
+
+
+            <a
+                class="nav-item active"
+                href="/history">
+
+                <span class="nav-icon">
+                    ◷
+                </span>
+
+                History
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="/irrigation">
+
+                <span class="nav-icon">
+                    ⌁
+                </span>
+
+                Irrigation
+
+            </a>
+
+
+            <div class="nav-section">
+                Farm
+            </div>
+
+
+            <a
+                class="nav-item"
+                href="/my-farm">
+
+                <span class="nav-icon">
+                    ⌂
+                </span>
+
+                My Farm
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="/alerts">
+
+                <span class="nav-icon">
+                    !
+                </span>
+
+                Alerts
+
+            </a>
+
+
+            <a
+                class="nav-item"
+                href="/settings">
+
+                <span class="nav-icon">
+                    ⚙
+                </span>
+
+                Settings
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <a
+                class="logout-btn"
+                href="/login">
+
+                <span>
+                    ←
+                </span>
+
+                Logout
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================
+         MAIN
+    ========================= -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <h1>
+                    Farm History
+                </h1>
+
+                <p>
+                    Recent soil sensor readings
+                </p>
+
+            </div>
+
+
+            <div class="farm-location">
+
+                {{ city }}
+
+                {% if state %}
+                    · {{ state }}
+                {% endif %}
+
+            </div>
+
+        </header>
+
+
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+
+            <!-- INTRO -->
+
+            <div class="intro">
+
+                <h2>
+                    Sensor Reading History
+                </h2>
+
+                <p>
+                    View the latest readings recorded from your farm's soil sensors.
+                </p>
+
+            </div>
+
+
+
+            <!-- =========================
+                 SUMMARY
+            ========================= -->
+
+            <div class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Crop
+                    </div>
+
+                    <div class="summary-value">
+                        {{ crop_type }}
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Farm Size
+                    </div>
+
+                    <div class="summary-value">
+                        {{ farm_size }}
+                        <span style="font-size:12px;color:#6B6B6B;">
+                            ha
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        Recorded Readings
+                    </div>
+
+                    <div class="summary-value">
+                        {{ readings|length }}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =========================
+                 HISTORY TABLE
+            ========================= -->
+
+            <div class="history-card">
+
+
+                <div class="history-header">
+
+                    <div class="history-title">
+                        Recent Readings
+                    </div>
+
+                    <div class="history-count">
+                        Last 20 readings
+                    </div>
+
+                </div>
+
+
+                {% if readings %}
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Date / Time
+                                </th>
+
+                                <th>
+                                    Nitrogen
+                                </th>
+
+                                <th>
+                                    Phosphorus
+                                </th>
+
+                                <th>
+                                    Potassium
+                                </th>
+
+                                <th>
+                                    Moisture
+                                </th>
+
+                                <th>
+                                    pH
+                                </th>
+
+                                <th>
+                                    Temperature
+                                </th>
+
+                                <th>
+                                    Humidity
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="history-body">
+
+                            {% for reading in readings %}
+
+                            <tr>
+
+                                <!-- DATE -->
+
+                                <td>
+
+                                    {% if reading.timestamp is defined %}
+                                        {{ reading.timestamp }}
+                                    {% elif reading.time is defined %}
+                                        {{ reading.time }}
+                                    {% elif reading.date is defined %}
+                                        {{ reading.date }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- NITROGEN -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.nitrogen is defined %}
+                                            {{ reading.nitrogen }}
+                                        {% elif reading.N is defined %}
+                                            {{ reading.N }}
+                                        {% elif reading.n is defined %}
+                                            {{ reading.n }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        mg/kg
+                                    </span>
+
+                                </td>
+
+
+                                <!-- PHOSPHORUS -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.phosphorus is defined %}
+                                            {{ reading.phosphorus }}
+                                        {% elif reading.P is defined %}
+                                            {{ reading.P }}
+                                        {% elif reading.p is defined %}
+                                            {{ reading.p }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        mg/kg
+                                    </span>
+
+                                </td>
+
+
+                                <!-- POTASSIUM -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.potassium is defined %}
+                                            {{ reading.potassium }}
+                                        {% elif reading.K is defined %}
+                                            {{ reading.K }}
+                                        {% elif reading.k is defined %}
+                                            {{ reading.k }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        mg/kg
+                                    </span>
+
+                                </td>
+
+
+                                <!-- MOISTURE -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.soil_moisture is defined %}
+                                            {{ reading.soil_moisture }}
+                                        {% elif reading.moisture is defined %}
+                                            {{ reading.moisture }}
+                                        {% elif reading.Moisture is defined %}
+                                            {{ reading.Moisture }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        %
+                                    </span>
+
+                                </td>
+
+
+                                <!-- PH -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.ph is defined %}
+                                            {{ reading.ph }}
+                                        {% elif reading.pH is defined %}
+                                            {{ reading.pH }}
+                                        {% elif reading.soil_ph is defined %}
+                                            {{ reading.soil_ph }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                </td>
+
+
+                                <!-- TEMPERATURE -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.temperature is defined %}
+                                            {{ reading.temperature }}
+                                        {% elif reading.temp is defined %}
+                                            {{ reading.temp }}
+                                        {% elif reading.Temperature is defined %}
+                                            {{ reading.Temperature }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        °C
+                                    </span>
+
+                                </td>
+
+
+                                <!-- HUMIDITY -->
+
+                                <td>
+
+                                    <span class="value">
+
+                                        {% if reading.humidity is defined %}
+                                            {{ reading.humidity }}
+                                        {% elif reading.Humidity is defined %}
+                                            {{ reading.Humidity }}
+                                        {% elif reading.hum is defined %}
+                                            {{ reading.hum }}
+                                        {% else %}
+                                            —
+                                        {% endif %}
+
+                                    </span>
+
+                                    <span class="unit">
+                                        %
+                                    </span>
+
+                                </td>
+
+
+                                <!-- STATUS -->
+
+                                <td>
+
+                                    {% set n_value = reading.nitrogen
+                                        if reading.nitrogen is defined
+                                        else reading.N
+                                        if reading.N is defined
+                                        else reading.n
+                                        if reading.n is defined
+                                        else 0 %}
+
+
+                                    {% set p_value = reading.phosphorus
+                                        if reading.phosphorus is defined
+                                        else reading.P
+                                        if reading.P is defined
+                                        else reading.p
+                                        if reading.p is defined
+                                        else 0 %}
+
+
+                                    {% set k_value = reading.potassium
+                                        if reading.potassium is defined
+                                        else reading.K
+                                        if reading.K is defined
+                                        else reading.k
+                                        if reading.k is defined
+                                        else 0 %}
+
+
+                                    {% set moisture_value = reading.soil_moisture
+                                        if reading.soil_moisture is defined
+                                        else reading.moisture
+                                        if reading.moisture is defined
+                                        else 50 %}
+
+
+                                    {% set ph_value = reading.ph
+                                        if reading.ph is defined
+                                        else reading.pH
+                                        if reading.pH is defined
+                                        else 6.5 %}
+
+
+                                    {% if
+                                        n_value|float < 92.3
+                                        or p_value|float < 4.2
+                                        or k_value|float < 42
+                                        or moisture_value|float < 40
+                                        or moisture_value|float > 70
+                                        or ph_value|float < 6.8
+                                        or ph_value|float > 7.2
+                                    %}
+
+                                        <span class="status warning">
+                                            Check
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="status good">
+                                            Normal
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                {% else %}
+
+
+                <!-- EMPTY -->
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        ◷
+                    </div>
+
+                    <h3>
+                        No readings yet
+                    </h3>
+
+                    <p>
+                        Sensor readings will appear here once data is available.
+                    </p>
+
+                </div>
+
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>

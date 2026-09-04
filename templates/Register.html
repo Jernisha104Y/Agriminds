@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AgriMinds - Register</title>
+
+    <link rel="manifest"
+        href="{{ url_for('static', filename='manifest.json') }}">
+
+    <meta name="theme-color" content="#3F6B35">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="AgriMinds">
+
+    <link rel="apple-touch-icon"
+        href="{{ url_for('static', filename='logo.png') }}">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #3F6B35;
+            --green-dark: #345A2C;
+            --green-light: #5C8051;
+            --cream: #F4F1E8;
+            --white: #FFFFFF;
+            --black: #222222;
+            --grey: #6B6B6B;
+            --border: #D7D4CC;
+            --error-bg: #F8EEEE;
+            --error-border: #E2BBBB;
+            --error-text: #B33A3A;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--cream);
+            font-family: 'DM Sans', Arial, sans-serif;
+            color: var(--black);
+            padding: 40px 20px;
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: var(--green);
+            padding: 30px 40px;
+        }
+
+        .header-brand {
+            margin-bottom: 22px;
+        }
+
+        .header-brand img {
+            display: block;
+            height: 62px;
+            width: auto;
+            max-width: 240px;
+            object-fit: contain;
+        }
+
+        .header-title {
+            color: var(--white);
+            font-size: 1.7rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .header-sub {
+            color: #E1E9DE;
+            font-size: 0.88rem;
+            font-weight: 400;
+        }
+
+        .card-body {
+            padding: 35px 40px 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            color: var(--black);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--black);
+            font-size: 0.77rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .input-field {
+            width: 100%;
+            height: 46px;
+            padding: 0 13px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            outline: none;
+            color: var(--black);
+            font-family: inherit;
+            font-size: 0.92rem;
+            font-weight: 400;
+        }
+
+        .input-field:focus {
+            border-color: var(--green);
+            outline: none;
+        }
+
+        .input-field::placeholder {
+            color: #999999;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            height: 22px;
+            padding-right: 10px;
+            border-right: 1px solid var(--border);
+            color: var(--grey);
+            font-size: 0.83rem;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .with-prefix {
+            padding-left: 76px;
+        }
+
+        select.input-field {
+            cursor: pointer;
+        }
+
+        .crop-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .crop-card {
+            min-height: 76px;
+            padding: 10px 6px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .crop-card:hover {
+            border-color: var(--green-light);
+        }
+
+        .crop-card.selected {
+            border-color: var(--green);
+            background: #EEF3EB;
+        }
+
+        .crop-emoji {
+            font-size: 1.45rem;
+            margin-bottom: 5px;
+        }
+
+        .crop-name {
+            color: var(--black);
+            font-size: 0.74rem;
+            font-weight: 500;
+        }
+
+        .crop-card.selected .crop-name {
+            color: var(--green);
+        }
+
+        .soil-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .soil-card {
+            min-height: 76px;
+            padding: 10px 6px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .soil-card:hover {
+            border-color: var(--green-light);
+        }
+
+        .soil-card.selected {
+            border-color: var(--green);
+            background: #EEF3EB;
+        }
+
+        .soil-color {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-bottom: 6px;
+        }
+
+        .soil-name {
+            color: var(--black);
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .soil-card.selected .soil-name {
+            color: var(--green);
+        }
+
+        .error-msg {
+            display: none;
+            background: var(--error-bg);
+            border: 1px solid var(--error-border);
+            border-radius: 6px;
+            padding: 11px 13px;
+            margin-bottom: 18px;
+            color: var(--error-text);
+            font-size: 0.82rem;
+        }
+
+        .btn-register {
+            width: 100%;
+            height: 48px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 6px;
+            background: var(--green);
+            color: var(--white);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-register:hover {
+            background: var(--green-dark);
+        }
+
+        .login-link {
+            margin-top: 20px;
+            text-align: center;
+            color: var(--grey);
+            font-size: 0.85rem;
+        }
+
+        .login-link a {
+            color: var(--green);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            color: var(--green-dark);
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 12px;
+            }
+
+            .card-header {
+                padding: 25px;
+            }
+
+            .card-body {
+                padding: 28px 25px 30px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .crop-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .soil-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .crop-grid,
+            .soil-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="register-card">
+
+        <div class="card-header">
+
+            <div class="header-brand">
+                <img
+                    src="{{ url_for('static', filename='logo.png') }}"
+                    alt="AgriMinds Logo">
+            </div>
+
+            <div class="header-title">
+                Create your account
+            </div>
+
+            <div class="header-sub">
+                Set up your farm profile to get started.
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="error-msg" id="error-message"></div>
+
+            <div class="section">
+
+                <div class="section-title">
+                    Personal Information
+                </div>
+
+                <div class="input-group">
+
+                    <label
+                        class="input-label"
+                        for="full-name">
+                        Full Name
+                    </label>
+
+                    <input
+                        class="input-field"
+                        type="text"
+                        id="full-name"
+                        placeholder="e.g. Arjun Kumar">
+
+                </div>
+
+                <div class="input-group">
+
+                    <label
+                        class="input-label"
+                        for="reg-phone">
+                        Mobile Number
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">
+                            🇮🇳 +91
+                        </span>
+
+                        <input
+                            class="input-field with-prefix"
+                            type="tel"
+                            id="reg-phone"
+                            placeholder="98765 43210"
+                            maxlength="10"
+                            inputmode="numeric">
+
+                    </div>
+
+                </div>
+
+                <div class="input-row">
+
+                    <div class="input-group">
+
+                        <label
+                            class="input-label"
+                            for="state">
+                            State
+                        </label>
+
+                        <select
+                            class="input-field"
+                            id="state">
+
+                            <option value="">
+                                Select state
+                            </option>
+
+                            <option>
+                                Tamil Nadu
+                            </option>
+
+                            <option>
+                                Karnataka
+                            </option>
+
+                            <option>
+                                Andhra Pradesh
+                            </option>
+
+                            <option>
+                                Maharashtra
+                            </option>
+
+                            <option>
+                                Punjab
+                            </option>
+
+                            <option>
+                                Uttar Pradesh
+                            </option>
+
+                            <option>
+                                Gujarat
+                            </option>
+
+                            <option>
+                                Rajasthan
+                            </option>
+
+                            <option>
+                                West Bengal
+                            </option>
+
+                            <option>
+                                Telangana
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="input-group">
+
+                        <label
+                            class="input-label"
+                            for="city">
+                            City / District
+                        </label>
+
+                        <input
+                            class="input-field"
+                            type="text"
+                            id="city"
+                            placeholder="e.g. Tiruchirappalli">
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label
+                        class="input-label"
+                        for="land-size">
+                        Land (Hectares)
+                    </label>
+
+                    <input
+                        class="input-field"
+                        type="number"
+                        id="land-size"
+                        placeholder="e.g. 2.5"
+                        min="0.1"
+                        step="0.1">
+
+                </div>
+
+            </div>
+
+            <div class="section">
+
+                <div class="section-title">
+                    Farm Information
+                </div>
+
+                <div class="input-group">
+
+                    <label class="input-label">
+                        Crop Type
+                    </label>
+
+                    <div class="crop-grid">
+
+                        <div
+                            class="crop-card"
+                            onclick="selectCrop(this, 'Rice')">
+
+                            <div class="crop-emoji">
+                                🌾
+                            </div>
+
+                            <div class="crop-name">
+                                Rice
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="crop-card"
+                            onclick="selectCrop(this, 'Maize')">
+
+                            <div class="crop-emoji">
+                                🌽
+                            </div>
+
+                            <div class="crop-name">
+                                Maize
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="crop-card"
+                            onclick="selectCrop(this, 'Cotton')">
+
+                            <div class="crop-emoji">
+                                🌿
+                            </div>
+
+                            <div class="crop-name">
+                                Cotton
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="crop-card"
+                            onclick="selectCrop(this, 'Sugarcane')">
+
+                            <div class="crop-emoji">
+                                🎋
+                            </div>
+
+                            <div class="crop-name">
+                                Sugarcane
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="crop-card"
+                            onclick="selectCrop(this, 'Tomato')">
+
+                            <div class="crop-emoji">
+                                🍅
+                            </div>
+
+                            <div class="crop-name">
+                                Tomato
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label class="input-label">
+                        Soil Type
+                    </label>
+
+                    <div class="soil-grid">
+
+                        <div
+                            class="soil-card"
+                            onclick="selectSoil(this, 'Red_Loam')">
+
+                            <div
+                                class="soil-color"
+                                style="background:#C1440E;">
+                            </div>
+
+                            <div class="soil-name">
+                                Red Loam
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="soil-card"
+                            onclick="selectSoil(this, 'Sandy_Loam')">
+
+                            <div
+                                class="soil-color"
+                                style="background:#D4B483;">
+                            </div>
+
+                            <div class="soil-name">
+                                Sandy Loam
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="soil-card"
+                            onclick="selectSoil(this, 'Black_Cotton')">
+
+                            <div
+                                class="soil-color"
+                                style="background:#3D3532;">
+                            </div>
+
+                            <div class="soil-name">
+                                Black Cotton
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="soil-card"
+                            onclick="selectSoil(this, 'Alluvial')">
+
+                            <div
+                                class="soil-color"
+                                style="background:#B5A480;">
+                            </div>
+
+                            <div class="soil-name">
+                                Alluvial
+                            </div>
+
+                        </div>
+
+                        <div
+                            class="soil-card"
+                            onclick="selectSoil(this, 'Laterite')">
+
+                            <div
+                                class="soil-color"
+                                style="background:#A0522D;">
+                            </div>
+
+                            <div class="soil-name">
+                                Laterite
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="input-group">
+
+                    <label
+                        class="input-label"
+                        for="sowing-date">
+                        Sowing Date
+                    </label>
+
+                    <input
+                        class="input-field"
+                        type="date"
+                        id="sowing-date">
+
+                </div>
+
+            </div>
+
+            <button
+                type="button"
+                class="btn-register"
+                onclick="registerUser()">
+
+                Create Account
+
+            </button>
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="/login">
+                    Sign in
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let selectedCrop = '';
+        let selectedSoil = '';
+
+        /* PHONE - NUMBERS ONLY */
+
+        document
+            .getElementById('reg-phone')
+            .addEventListener(
+                'input',
+                function () {
+
+                    this.value =
+                        this.value.replace(/\D/g, '');
+
+                }
+            );
+
+        /* CROP SELECTION */
+
+        function selectCrop(element, crop) {
+
+            document
+                .querySelectorAll('.crop-card')
+                .forEach(function (card) {
+
+                    card.classList.remove('selected');
+
+                });
+
+            element.classList.add('selected');
+
+            selectedCrop = crop;
+        }
+
+        /* SOIL SELECTION */
+
+        function selectSoil(element, soil) {
+
+            document
+                .querySelectorAll('.soil-card')
+                .forEach(function (card) {
+
+                    card.classList.remove('selected');
+
+                });
+
+            element.classList.add('selected');
+
+            selectedSoil = soil;
+        }
+
+        /* ERROR MESSAGE */
+
+        function showError(message) {
+
+            const error =
+                document.getElementById(
+                    'error-message'
+                );
+
+            error.textContent = message;
+
+            error.style.display = 'block';
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        /* REGISTER */
+
+        function registerUser() {
+
+            const name =
+                document
+                    .getElementById('full-name')
+                    .value
+                    .trim();
+
+            const phone =
+                document
+                    .getElementById('reg-phone')
+                    .value
+                    .trim();
+
+            const state =
+                document
+                    .getElementById('state')
+                    .value;
+
+            const city =
+                document
+                    .getElementById('city')
+                    .value
+                    .trim();
+
+            const land =
+                document
+                    .getElementById('land-size')
+                    .value;
+
+            const sowingDate =
+                document
+                    .getElementById('sowing-date')
+                    .value;
+
+            /* VALIDATION */
+
+            if (!name) {
+
+                showError(
+                    'Please enter your full name.'
+                );
+
+                return;
+            }
+
+            if (
+                phone.length !== 10 ||
+                !/^\d{10}$/.test(phone)
+            ) {
+
+                showError(
+                    'Please enter a valid 10-digit mobile number.'
+                );
+
+                return;
+            }
+
+            if (!state) {
+
+                showError(
+                    'Please select your state.'
+                );
+
+                return;
+            }
+
+            if (!land || Number(land) <= 0) {
+
+                showError(
+                    'Please enter your land size.'
+                );
+
+                return;
+            }
+
+            if (!selectedCrop) {
+
+                showError(
+                    'Please select your crop type.'
+                );
+
+                return;
+            }
+
+            if (!selectedSoil) {
+
+                showError(
+                    'Please select your soil type.'
+                );
+
+                return;
+            }
+
+            if (!sowingDate) {
+
+                showError(
+                    'Please enter your sowing date.'
+                );
+
+                return;
+            }
+
+            /* REMOVE PREVIOUS ERROR */
+
+            document
+                .getElementById('error-message')
+                .style.display = 'none';
+
+            /* DATA TO FLASK */
+
+            const payload = {
+
+                name: name,
+
+                phone: phone,
+
+                state: state,
+
+                city: city,
+
+                land_size:
+                    parseFloat(land),
+
+                crop_type:
+                    selectedCrop,
+
+                soil_type:
+                    selectedSoil,
+
+                sowing_date:
+                    sowingDate
+            };
+
+            /* SEND TO FLASK */
+
+            fetch('/register', {
+
+                method: 'POST',
+
+                headers: {
+                    'Content-Type':
+                        'application/json'
+                },
+
+                body:
+                    JSON.stringify(payload)
+
+            })
+
+            .then(function (response) {
+
+                return response.json();
+
+            })
+
+            .then(function (data) {
+
+                if (data.success) {
+
+                    window.location.href =
+                        data.redirect ||
+                        '/dashboard';
+
+                } else {
+
+                    showError(
+                        data.message ||
+                        'Registration failed. Please try again.'
+                    );
+
+                }
+
+            })
+
+            .catch(function () {
+
+                showError(
+                    'Unable to connect to the server. Please try again.'
+                );
+
+            });
+
+        }
+
+        /* SERVICE WORKER */
+
+        if ('serviceWorker' in navigator) {
+
+            navigator.serviceWorker.register(
+                "{{ url_for('static', filename='service-worker.js') }}"
+            )
+            .then(function () {
+
+                console.log(
+                    'PWA ready!'
+                );
+
+            })
+            .catch(function (error) {
+
+                console.log(
+                    'Service worker error:',
+                    error
+                );
+
+            });
+
+        }
+
+    </script>
+
+</body>
+
+</html>
